@@ -1,4 +1,4 @@
-[![banner](../banner.png)](https://cloud.google.com/?utm_source=github&utm_medium=referral&utm_campaign=GCP&utm_content=packages_repository_banner)
+[![banner](banner.png)](https://cloud.google.com/?utm_source=github&utm_medium=referral&utm_campaign=GCP&utm_content=packages_repository_banner)
 
 # Implement a data analytics pipeline with an event-driven architecture on Google Cloud
 
