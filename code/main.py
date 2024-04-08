@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-from google.cloud import storage
 import functions_framework
 from google.cloud import bigquery, storage
 import os
@@ -52,15 +50,15 @@ def move_blob(bucket_name, blob_name):
 
     storage_client = storage.Client()
     source_bucket = storage_client.bucket(bucket_name)
-    source_blob = source_bucket.blob(blob_name)
+    src_blob = source_bucket.blob(blob_name)
     destination_bucket = storage_client.bucket(destination_bucket_name)
 
-    blob_copy = source_bucket.copy_blob(source_blob, destination_bucket, blob_name)
+    blob_copy = source_bucket.copy_blob(src_blob, destination_bucket, blob_name)
     source_bucket.delete_blob(blob_name)
 
     print(
         "Blob {} in bucket {} moved to blob {} in bucket {}.".format(
-            source_blob.name,
+            src_blob.name,
             source_bucket.name,
             blob_copy.name,
             destination_bucket.name,
