@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +17,15 @@ set -e
 
 add_iam_member()
 {
-  gcloud projects add-iam-policy-binding $PROJECT_ID --member=$1 --role=$2
+  gcloud projects add-iam-policy-binding "$PROJECT_ID" --member="$1" --role="$2"
 }
 
 if [ -z "$GOOGLE_CLOUD_PROJECT" ]
 then
    echo Project not set!
    echo What Project Id do you want to deploy the solution to?
-   read var_project_id
-   gcloud config set project $var_project_id
+   read -r var_project_id
+   gcloud config set project "$var_project_id"
    export PROJECT_ID=$var_project_id
 else
    export PROJECT_ID=$GOOGLE_CLOUD_PROJECT
@@ -32,11 +33,11 @@ fi
 
 echo Running prerequisites on project $PROJECT_ID
 BUCKET_NAME=gs://$PROJECT_ID-tf-state
-if gsutil ls $BUCKET_NAME; then
+if gsutil ls "$BUCKET_NAME"; then
     echo Terraform bucket already created!
 else
     echo Creating Terraform state bucket...
-    gsutil mb $BUCKET_NAME
+    gsutil mb "$BUCKET_NAME"
 fi
 
 echo Enabling required APIs...
