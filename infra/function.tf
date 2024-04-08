@@ -30,7 +30,7 @@ resource "google_cloudfunctions2_function" "function" {
   location    = var.region
   description = "Load data from GCS to BQ"
   labels      = local.resource_labels
-  
+
   build_config {
     runtime     = "python310"
     entry_point = "trigger_gcs" # Set the entry point in the code
