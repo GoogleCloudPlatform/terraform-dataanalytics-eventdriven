@@ -56,8 +56,7 @@ gcloud services enable cloudbuild.googleapis.com \
     storage-component.googleapis.com \
     eventarc.googleapis.com \
     eventarcpublishing.googleapis.com \
---project $PROJECT_ID
-
+--project "$PROJECT_ID"
 
 echo "Granting Cloud Build's Service Account IAM roles to deploy the resources..."
 PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)')
