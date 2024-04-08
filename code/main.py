@@ -51,9 +51,9 @@ def move_blob(bucket_name, blob_name):
     storage_client = storage.Client()
     source_bucket = storage_client.bucket(bucket_name)
     src_blob = source_bucket.blob(blob_name)
-    destination_bucket = storage_client.bucket(destination_bucket_name)
+    dst_bucket = storage_client.bucket(destination_bucket_name)
 
-    blob_copy = source_bucket.copy_blob(src_blob, destination_bucket, blob_name)
+    blob_copy = source_bucket.copy_blob(src_blob, dst_bucket, blob_name)
     source_bucket.delete_blob(blob_name)
 
     print(
@@ -61,7 +61,7 @@ def move_blob(bucket_name, blob_name):
             src_blob.name,
             source_bucket.name,
             blob_copy.name,
-            destination_bucket.name,
+            dst_bucket.name,
         )
     )
 
