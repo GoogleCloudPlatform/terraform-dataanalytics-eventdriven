@@ -10,7 +10,7 @@ By adopting an event-driven architecture, companies can harness the power of rea
 
 Cloud functions play a pivotal role in this setup. They serve as the bridge between the cloud storage and BigQuery, enabling smooth and automated data ingestion. As new data arrives in the cloud storage, the cloud functions can be configured to trigger automatically, instantly fetching and loading the data into BigQuery. This eliminates the need for manual intervention and guarantees a streamlined and efficient data transfer process.
 
-Utilizing Google Cloud's BigQuery as the data warehousing solution further enhances the value of this architecture. BigQuery offers a powerful and scalable analytics platform capable of handling large volumes of data. Its unique serverless architecture enables elastic scaling, allowing the customer to effortlessly accommodate data growth without worrying about infrastructure management. 
+Utilizing Google Cloud's BigQuery as the data warehousing solution further enhances the value of this architecture. BigQuery offers a powerful and scalable analytics platform capable of handling large volumes of data. Its unique serverless architecture enables elastic scaling, allowing the customer to effortlessly accommodate data growth without worrying about infrastructure management.
 
 In summary, a data analytics pipeline with an event-driven architecture, empowers the customer with a scalable, efficient, and real-time data processing solution. This architecture streamlines data ingestion, ensures prompt analysis, and leverages Google Cloud's comprehensive suite of analytics tools, ultimately enabling the customer to make data-driven decisions faster and stay ahead in today's competitive landscape.
 
