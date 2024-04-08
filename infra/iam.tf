@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "google_project" "project" {}
-
 resource "google_service_account" "function_sa" {
   account_id   = local.function_name
   display_name = "Cloud Function service account"
