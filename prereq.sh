@@ -23,7 +23,7 @@ add_iam_member()
 if [ -z "$GOOGLE_CLOUD_PROJECT" ]
 then
    echo Project not set!
-   echo What Project Id do you want to deploy the solution to?
+   echo "What Project Id do you want to deploy the solution to?"
    read -r var_project_id
    gcloud config set project "$var_project_id"
    export PROJECT_ID=$var_project_id
@@ -31,7 +31,7 @@ else
    export PROJECT_ID=$GOOGLE_CLOUD_PROJECT
 fi
 
-echo Running prerequisites on project $PROJECT_ID
+echo Running prerequisites on project "$PROJECT_ID"
 BUCKET_NAME=gs://$PROJECT_ID-tf-state
 if gsutil ls "$BUCKET_NAME"; then
     echo Terraform bucket already created!
@@ -60,17 +60,17 @@ gcloud services enable cloudbuild.googleapis.com \
 
 
 echo "Granting Cloud Build's Service Account IAM roles to deploy the resources..."
-PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
+PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)')
 MEMBER=serviceAccount:$PROJECT_NUMBER@cloudbuild.gserviceaccount.com
-add_iam_member $MEMBER roles/editor
-add_iam_member $MEMBER roles/iam.securityAdmin
-add_iam_member $MEMBER roles/compute.networkAdmin
-add_iam_member $MEMBER roles/secretmanager.admin
-add_iam_member $MEMBER roles/eventarc.admin
+add_iam_member "$MEMBER" roles/editor
+add_iam_member "$MEMBER" roles/iam.securityAdmin
+add_iam_member "$MEMBER" roles/compute.networkAdmin
+add_iam_member "$MEMBER" roles/secretmanager.admin
+add_iam_member "$MEMBER" roles/eventarc.admin
 
 echo "Granting Cloud Storage's Service Account permissions required by EventArc..."
-GCS_SERVICE_ACCOUNT="$(gsutil kms serviceaccount -p $PROJECT_ID)"
+GCS_SERVICE_ACCOUNT="$(gsutil kms serviceaccount -p "$PROJECT_ID")"
 MEMBER=serviceAccount:$GCS_SERVICE_ACCOUNT
-add_iam_member $MEMBER roles/pubsub.publisher
+add_iam_member "$MEMBER" roles/pubsub.publisher
 
 echo Script completed successfully!
