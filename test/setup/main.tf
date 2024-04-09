@@ -23,20 +23,20 @@ module "project" {
   region         = var.region
 
   activate_apis = [
-   "cloudbuild.googleapis.com",
-   "bigquery.googleapis.com",
-   "cloudresourcemanager.googleapis.com",
-   "cloudfunctions.googleapis.com",
-   "compute.googleapis.com",
-   "eventarc.googleapis.com",
-   "iam.googleapis.com",
-   "run.googleapis.com",
-   "pubsub.googleapis.com",
-   "secretmanager.googleapis.com",
-   "servicenetworking.googleapis.com",
-   "storage.googleapis.com",
-   "storage-component.googleapis.com",
-   "eventarc.googleapis.com",
-   "eventarcpublishing.googleapis.com"
+     "cloudbuild.googleapis.com",
+     "bigquery.googleapis.com",
+     "cloudresourcemanager.googleapis.com",
+     "cloudfunctions.googleapis.com",
+     "compute.googleapis.com",
+     "eventarc.googleapis.com",
+     "iam.googleapis.com",
+     "run.googleapis.com",
+     "pubsub.googleapis.com",
+     "secretmanager.googleapis.com",
+     "servicenetworking.googleapis.com",
+     "storage.googleapis.com",
+     "storage-component.googleapis.com",
+     "eventarc.googleapis.com",
+     "eventarcpublishing.googleapis.com"
   ]
 }
