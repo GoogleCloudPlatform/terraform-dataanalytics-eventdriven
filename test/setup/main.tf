@@ -20,9 +20,8 @@ module "project" {
 
   name              = "terraform-dataanalytics-eventdriven"
   random_project_id = "true"
-  org_id            = var.org_id
-  folder_id         = var.folder_id
-  billing_account   = var.billing_account
+  project_id     = var.project_id
+  region         = var.region
 
   activate_apis = [
    "cloudbuild.googleapis.com",
