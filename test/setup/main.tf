@@ -20,7 +20,6 @@ module "project" {
 
   name              = "terraform-dataanalytics-eventdriven"
   random_project_id = "true"
-  project_id     = var.project_id
   region         = var.region
 
   activate_apis = [
