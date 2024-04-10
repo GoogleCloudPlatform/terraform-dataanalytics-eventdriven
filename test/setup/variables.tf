@@ -35,3 +35,7 @@ variable "resource_labels" {
   description = "Resource labels"
   default     = {}
 }
+
+variable "billing_account" {
+  description = "The billing account id associated with the project, e.g. XXXXXX-YYYYYY-ZZZZZZ"
+}
