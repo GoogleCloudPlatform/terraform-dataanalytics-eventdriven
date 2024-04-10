@@ -22,6 +22,11 @@ locals {
   })
 }
 
+# ID of the project in which you want to deploy the solution
+variable "project_id" {
+  description = "GCP Project ID"
+}
+
 #Defines the deployment region for cloud resources.
 variable "region" {
   type        = string
