@@ -18,7 +18,7 @@ module "project" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 14.0"
 
-  name              = "terraform-dataanalytics-eventdriven"
+  name              = "dataanalytics-eventdriven"
   random_project_id = "true"
   billing_account   = var.billing_account
 
