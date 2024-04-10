@@ -48,6 +48,8 @@ resource "google_project_iam_member" "invoker" {
   member  = "serviceAccount:${google_service_account.function_sa.email}"
 }
 
+data "google_storage_project_service_account" "gcs_account" {}
+
 resource "google_project_iam_member" "gcs_to_pubsub" {
   project = module.project.project_id
   role    = "roles/pubsub.publisher"
