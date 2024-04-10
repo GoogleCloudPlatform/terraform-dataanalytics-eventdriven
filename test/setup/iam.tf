@@ -13,8 +13,9 @@
 # limitations under the License.
 
 resource "google_service_account" "function_sa" {
-  account_id   = local.function_name
-  display_name = "Cloud Function service account"
+  project      = module.project.project_id
+  account_id   = "ci-account"
+  display_name = "ci-account"
 }
 
 resource "google_project_iam_member" "storage_admin" {
