@@ -18,31 +18,31 @@ resource "google_service_account" "function_sa" {
 }
 
 resource "google_project_iam_member" "storage_admin" {
-  project = var.project_id
+  project = module.host-project.project_id
   role    = "roles/storage.admin"
   member  = "serviceAccount:${google_service_account.function_sa.email}"
 }
 
 resource "google_project_iam_member" "bq_admin" {
-  project = var.project_id
+  project = module.host-project.project_id
   role    = "roles/bigquery.admin"
   member  = "serviceAccount:${google_service_account.function_sa.email}"
 }
 
 resource "google_project_iam_member" "iam_user" {
-  project = var.project_id
+  project = module.host-project.project_id
   role    = "roles/iam.serviceAccountUser"
   member  = "serviceAccount:${google_service_account.function_sa.email}"
 }
 
 resource "google_project_iam_member" "event_receiver" {
-  project = var.project_id
+  project = module.host-project.project_id
   role    = "roles/eventarc.eventReceiver"
   member  = "serviceAccount:${google_service_account.function_sa.email}"
 }
 
 resource "google_project_iam_member" "invoker" {
-  project = var.project_id
+  project = module.host-project.project_id
   role    = "roles/run.invoker"
   member  = "serviceAccount:${google_service_account.function_sa.email}"
 }
@@ -50,7 +50,7 @@ resource "google_project_iam_member" "invoker" {
 data "google_storage_project_service_account" "gcs_account" {}
 
 resource "google_project_iam_member" "gcs_to_pubsub" {
-  project = var.project_id
+  project = module.host-project.project_id
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
 }
