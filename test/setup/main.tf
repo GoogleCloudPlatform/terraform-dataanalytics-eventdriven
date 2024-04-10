@@ -19,8 +19,8 @@ module "project" {
   version = "~> 14.0"
 
   name              = "dataanalytics-eventdriven"
-  random_project_id = "true"
   billing_account   = var.billing_account
+  project_id        = "dataanalytics-eventdriven"
 
   activate_apis = [
     "cloudbuild.googleapis.com",
