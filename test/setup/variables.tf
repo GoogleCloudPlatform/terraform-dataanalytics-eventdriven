@@ -25,7 +25,6 @@ locals {
 # ID of the project in which you want to deploy the solution
 variable "project_id" {
   description = "GCP Project ID"
-  default     = module.fabric-project.project_id
 }
 
 #Defines the deployment region for cloud resources.
