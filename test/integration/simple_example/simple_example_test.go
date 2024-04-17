@@ -44,7 +44,7 @@ func testGoogleCloudApis(t *testing.T, assert *assert.Assertions, projectId stri
 		"Service cloudfunctions":   	{service: "cloudfunctions"},
 		"Service compute":          	{service: "compute"},
 		"Service storage": 		{service: "storage"},
-		"Service eventarc":             {service: "trafficdirector"},
+		"Service eventarc":             {service: "eventarc"},
 	}
 	services := gcloud.Run(t, "services list", gcloud.WithCommonArgs([]string{"--project", projectId, "--format", "json"})).Array()
 	for _, tc := range serviceTests {
