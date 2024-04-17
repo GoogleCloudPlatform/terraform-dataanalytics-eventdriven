@@ -16,10 +16,7 @@ package simple_example
 
 import (
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"testing"
-	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
