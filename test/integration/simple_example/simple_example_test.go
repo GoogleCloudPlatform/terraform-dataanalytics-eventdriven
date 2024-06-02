@@ -39,7 +39,8 @@ func TestSimpleExample(t *testing.T) {
 		//testGoogleCloudApis(t, assert, projectId)
 		testParams := TestParams{t, assert, example, projectId}
 		// Check if the vision input and annotations buckets exists
-		outputBucketName, inputBucketName := testBucketExists(testParams, projectId)
+		//outputBucketName, inputBucketName := testBucketExists(testParams, projectId)
+		testBucketExists(testParams, projectId)
 	})
 
 	example.Test()
