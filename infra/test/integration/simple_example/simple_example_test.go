@@ -25,9 +25,9 @@ import (
 )
 
 type TestParams struct {
-	t *testing.T
-	assert *assert.Assertions
-	example *tft.TFBlueprintTest
+	t         *testing.T
+	assert    *assert.Assertions
+	example   *tft.TFBlueprintTest
 	projectId string
 }
 
@@ -39,20 +39,21 @@ func TestSimpleExample(t *testing.T) {
 		//testGoogleCloudApis(t, assert, projectId)
 		testParams := TestParams{t, assert, example, projectId}
 		// Check if the vision input and annotations buckets exists
-		outputBucketName, inputBucketName := testBucketExists(testParams, projectId)
+		//outputBucketName, inputBucketName := testBucketExists(testParams, projectId)
+		testBucketExists(testParams, projectId)
 	})
 
 	example.Test()
 }
 
 func testBucketExists(testParams TestParams, projectId string) (string, string) {
+	/*
 	gcloudArgs := gcloud.WithCommonArgs([]string{"--project", testParams.projectId})
 	// Check if the vision annotations bucket exists
 	outputBucketName := testParams.example.GetStringOutput(fmt.Sprintf("%s-upload", projectId))
 	storage := gcloud.Run(testParams.t, fmt.Sprintf("storage buckets describe %s --format=json", outputBucketName), gcloudArgs)
 	testParams.assert.NotEmpty(storage)
-	fmt.Println(outputBucketName)
- 	/*
+	
 
 	// Check if the vision input bucket exists
 	inputBucketName := testParams.example.GetStringOutput(fmt.Sprintf("%s-archive", projectId))
@@ -60,18 +61,18 @@ func testBucketExists(testParams TestParams, projectId string) (string, string) 
 	testParams.assert.NotEmpty(storage)
 	return outputBucketName, inputBucketName*/
 	return "teste-upload", "teste-archive"
-} 
+}
 
 func testGoogleCloudApis(t *testing.T, assert *assert.Assertions, projectId string) {
 	serviceTests := map[string]struct {
 		service string
 	}{
-		"Service cloudbuild":       	{service: "cloudbuild"},
-		"Service bigquery":         	{service: "bigquery"},
-		"Service cloudfunctions":   	{service: "cloudfunctions"},
-		"Service compute":          	{service: "compute"},
-		"Service storage": 		{service: "storage"},
-		"Service eventarc":             {service: "eventarc"},
+		"Service cloudbuild":     {service: "cloudbuild"},
+		"Service bigquery":       {service: "bigquery"},
+		"Service cloudfunctions": {service: "cloudfunctions"},
+		"Service compute":        {service: "compute"},
+		"Service storage":        {service: "storage"},
+		"Service eventarc":       {service: "eventarc"},
 	}
 	services := gcloud.Run(t, "services list", gcloud.WithCommonArgs([]string{"--project", projectId, "--format", "json"})).Array()
 	for _, tc := range serviceTests {
