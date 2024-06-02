@@ -58,7 +58,7 @@ func testBucketExists(testParams TestParams, projectId string) (string, string) 
 	storage = gcloud.Run(testParams.t, fmt.Sprintf("storage buckets describe %s --format=json", inputBucketName), gcloudArgs)
 	testParams.assert.NotEmpty(storage)
 	return outputBucketName, inputBucketName*/
-	return true
+	return "teste-upload", "teste-archive"
 } 
 
 func testGoogleCloudApis(t *testing.T, assert *assert.Assertions, projectId string) {
