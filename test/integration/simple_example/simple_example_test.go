@@ -24,6 +24,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type TestParams struct {
+	t *testing.T
+	assert *assert.Assertions
+	example *tft.TFBlueprintTest
+	projectId string
+}
+
 func TestSimpleExample(t *testing.T) {
 	example := tft.NewTFBlueprintTest(t)
 
