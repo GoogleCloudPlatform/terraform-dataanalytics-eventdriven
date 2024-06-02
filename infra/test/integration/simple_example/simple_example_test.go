@@ -39,19 +39,20 @@ func TestSimpleExample(t *testing.T) {
 		//testGoogleCloudApis(t, assert, projectId)
 		testParams := TestParams{t, assert, example, projectId}
 		// Check if the vision input and annotations buckets exists
-		//outputBucketName, inputBucketName := testBucketExists(testParams, projectId)
-		testBucketExists(testParams, projectId)
+		outputBucketName, inputBucketName := testBucketExists(testParams, projectId)
 	})
 
 	example.Test()
 }
 
 func testBucketExists(testParams TestParams, projectId string) (string, string) {
-	/*gcloudArgs := gcloud.WithCommonArgs([]string{"--project", testParams.projectId})
+	gcloudArgs := gcloud.WithCommonArgs([]string{"--project", testParams.projectId})
 	// Check if the vision annotations bucket exists
 	outputBucketName := testParams.example.GetStringOutput(fmt.Sprintf("%s-upload", projectId))
 	storage := gcloud.Run(testParams.t, fmt.Sprintf("storage buckets describe %s --format=json", outputBucketName), gcloudArgs)
 	testParams.assert.NotEmpty(storage)
+	fmt.Println(outputBucketName)
+ 	/*
 
 	// Check if the vision input bucket exists
 	inputBucketName := testParams.example.GetStringOutput(fmt.Sprintf("%s-archive", projectId))
