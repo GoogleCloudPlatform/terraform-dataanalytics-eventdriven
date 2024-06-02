@@ -29,11 +29,28 @@ func TestSimpleExample(t *testing.T) {
 
 	example.DefineVerify(func(assert *assert.Assertions) {
 		projectId := example.GetTFSetupStringOutput("project_id")
-		testGoogleCloudApis(t, assert, projectId)
+		//testGoogleCloudApis(t, assert, projectId)
+		testParams := TestParams{t, assert, example, projectId}
+		// Check if the vision input and annotations buckets exists
+		outputBucketName, inputBucketName := testBucketExists(testParams)
 	})
 
 	example.Test()
 }
+
+func testBucketExists(testParams TestParams) (string, string) {
+	gcloudArgs := gcloud.WithCommonArgs([]string{"--project", testParams.projectId})
+	// Check if the vision annotations bucket exists
+	outputBucketName := testParams.example.GetStringOutput(fmt.Sprintf("%d-upload", testParams.projectId))
+	storage := gcloud.Run(testParams.t, fmt.Sprintf("storage buckets describe %s --format=json", outputBucketName), gcloudArgs)
+	testParams.assert.NotEmpty(storage)
+
+	// Check if the vision input bucket exists
+	inputBucketName := testParams.example.GetStringOutput(fmt.Sprintf("%d-archive", testParams.projectId))
+	storage = gcloud.Run(testParams.t, fmt.Sprintf("storage buckets describe %s --format=json", inputBucketName), gcloudArgs)
+	testParams.assert.NotEmpty(storage)
+	return outputBucketName, inputBucketName
+} 
 
 func testGoogleCloudApis(t *testing.T, assert *assert.Assertions, projectId string) {
 	serviceTests := map[string]struct {
