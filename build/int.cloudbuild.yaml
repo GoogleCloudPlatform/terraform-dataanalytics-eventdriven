@@ -17,6 +17,7 @@ steps:
   dir: code
   name: ubuntu:bionic
   args:
+  - '/bin/bash'
   - '-c'
   - |
     apt-get update; apt install zip -y
