@@ -120,6 +120,10 @@ resource "google_project_iam_member" "eventarc_service_account_invoke_role" {
   ]
 }
 
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
 # # Get the Pub/Sub service account to trigger the pub/sub notification
 # # TODO: File bug for this to be a pickable service account
 resource "google_project_iam_member" "pub_sub_permissions_token" {
