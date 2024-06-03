@@ -12,39 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "google_service_account" "function_sa" {
+locals {
+  int_required_roles = [
+    "roles/resourcemanager.projectIamAdmin",
+    "roles/serviceusage.serviceUsageAdmin",
+    "roles/iam.serviceAccountAdmin",
+    "roles/storage.admin",
+    "roles/run.admin",
+    "roles/editor"
+  ]
+}
+
+resource "google_service_account" "int_test" {
   project      = module.project.project_id
   account_id   = "ci-account"
   display_name = "ci-account"
 }
 
-resource "google_project_iam_member" "storage_admin" {
+resource "google_project_iam_member" "int_test" {
+  for_each = toset(local.int_required_roles)
+
   project = module.project.project_id
-  role    = "roles/storage.admin"
-  member  = "serviceAccount:${google_service_account.function_sa.email}"
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.int_test.email}"
 }
 
-resource "google_project_iam_member" "bq_admin" {
-  project = module.project.project_id
-  role    = "roles/bigquery.admin"
-  member  = "serviceAccount:${google_service_account.function_sa.email}"
-}
-
-resource "google_project_iam_member" "iam_user" {
-  project = module.project.project_id
-  role    = "roles/iam.serviceAccountUser"
-  member  = "serviceAccount:${google_service_account.function_sa.email}"
-}
-
-resource "google_project_iam_member" "event_receiver" {
-  project = module.project.project_id
-  role    = "roles/eventarc.eventReceiver"
-  member  = "serviceAccount:${google_service_account.function_sa.email}"
-}
-
-resource "google_project_iam_member" "invoker" {
-  project = module.project.project_id
-  role    = "roles/run.invoker"
-  member  = "serviceAccount:${google_service_account.function_sa.email}"
+resource "google_service_account_key" "int_test" {
+  service_account_id = google_service_account.int_test.id
 }
 
