@@ -90,7 +90,6 @@ resource "time_sleep" "wait_for_apis" {
   depends_on = [
     google_project_iam_member.gcs_to_pubsub,
     google_project_iam_member.event_receiver,
-    google_storage_bucket_object.gcf_source_code.name,
     google_cloudfunctions2_function.function
   ]
 
