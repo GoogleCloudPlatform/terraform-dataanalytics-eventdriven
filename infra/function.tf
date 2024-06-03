@@ -89,7 +89,9 @@ resource "google_cloud_run_service_iam_member" "run_service_member" {
 resource "time_sleep" "wait_for_apis" {
   depends_on = [
     google_project_iam_member.gcs_to_pubsub,
-    google_project_iam_member.event_receiver
+    google_project_iam_member.event_receiver,
+    google_storage_bucket_object.gcf_source_code.name,
+    google_cloudfunctions2_function.function
   ]
 
   create_duration = var.time_to_enable_apis
