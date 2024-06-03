@@ -12,16 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-locals {
-  function_name = "gcs-to-bq-trigger"
-  resource_labels = merge(var.resource_labels, {
-    deployed_by = "cloudbuild"
-    repo        = "click-to-deploy-solutions"
-    solution    = "cloud-composer-etl"
-    terraform   = "true"
-  })
-}
-
 # ID of the project in which you want to deploy the solution
 variable "project_id" {
   description = "GCP Project ID"
@@ -32,11 +22,4 @@ variable "region" {
   type        = string
   description = "GCP region"
   default     = "southamerica-east1"
-}
-
-#Assigns a label to provisioned cloud resources
-variable "resource_labels" {
-  type        = map(string)
-  description = "Resource labels"
-  default     = {}
 }
