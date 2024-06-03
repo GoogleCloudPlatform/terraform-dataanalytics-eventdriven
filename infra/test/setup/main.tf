@@ -31,5 +31,6 @@ module "project" {
     "storage.googleapis.com",
     "serviceusage.googleapis.com",
     "cloudfunctions.googleapis.com",
+    "bigquery.googleapis.com",
   ]
 }
