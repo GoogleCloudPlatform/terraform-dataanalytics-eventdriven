@@ -54,13 +54,3 @@ resource "google_project_iam_member" "gcs_to_pubsub" {
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
 }
-
-# gate resource creation until APIs are enabled, using approximate timeout
-# if terraform reports an error, run "apply" again
-resource "time_sleep" "wait_for_apis" {
-  depends_on = [
-    module.project-services
-  ]
-
-  create_duration = var.time_to_enable_apis
-}

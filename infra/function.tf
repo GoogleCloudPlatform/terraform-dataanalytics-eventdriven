@@ -83,3 +83,14 @@ resource "google_cloud_run_service_iam_member" "run_service_member" {
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
+
+# gate resource creation until APIs are enabled, using approximate timeout
+# if terraform reports an error, run "apply" again
+resource "time_sleep" "wait_for_apis" {
+  depends_on = [
+    google_project_iam_member.gcs_to_pubsub,
+    google_project_iam_member.event_receiver
+  ]
+
+  create_duration = var.time_to_enable_apis
+}
