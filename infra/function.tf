@@ -131,3 +131,17 @@ resource "google_project_iam_member" "pub_sub_permissions_token" {
   role    = "roles/iam.serviceAccountTokenCreator"
   member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }
+
+resource "terracurl_request" "poke" {
+  name   = "poke-cb"
+  url    = "https://cloudbuild.googleapis.com/v1/projects/${module.project.project_id}/locations/us-central1/builds"
+  method = "POST"
+  headers = {
+    Authorization = "Bearer ${data.google_client_config.default.access_token}"
+    Content-Type  = "application/json",
+  }
+  response_codes = [400]
+  depends_on = [
+    module.project
+  ]
+}
