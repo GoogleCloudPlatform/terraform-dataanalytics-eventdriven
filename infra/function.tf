@@ -99,14 +99,14 @@ resource "google_cloud_run_service_iam_member" "run_service_member" {
 # Set up Eventarc service account for the Cloud Function to execute as
 # # Set up the Eventarc service account
 resource "google_service_account" "eventarc_service_account" {
-  project      = module.project-services.project_id
+  project      = var.project_id
   account_id   = "eventarc-sa-${random_id.id.hex}"
   display_name = "Service Account for Cloud Eventarc"
 }
 
 # # Grant the Eventarc service account Workflow Invoker Access
 resource "google_project_iam_member" "eventarc_service_account_invoke_role" {
-  project = module.project-services.project_id
+  project = var.project_id
   role    = "roles/workflows.invoker"
   member  = "serviceAccount:${google_service_account.eventarc_service_account.email}"
 
@@ -118,7 +118,7 @@ resource "google_project_iam_member" "eventarc_service_account_invoke_role" {
 # # Get the Pub/Sub service account to trigger the pub/sub notification
 # # TODO: File bug for this to be a pickable service account
 resource "google_project_iam_member" "pub_sub_permissions_token" {
-  project = module.project-services.project_id
+  project = var.project_id
   role    = "roles/iam.serviceAccountTokenCreator"
   member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }
