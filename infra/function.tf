@@ -96,6 +96,11 @@ resource "google_cloud_run_service_iam_member" "run_service_member" {
   create_duration = var.time_to_enable_apis
 }*/
 
+#random id
+resource "random_id" "id" {
+  byte_length = 4
+}
+
 # Set up Eventarc service account for the Cloud Function to execute as
 # # Set up the Eventarc service account
 resource "google_service_account" "eventarc_service_account" {
