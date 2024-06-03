@@ -32,5 +32,6 @@ module "project" {
     "serviceusage.googleapis.com",
     "cloudfunctions.googleapis.com",
     "bigquery.googleapis.com",
+    "eventarc.googleapis.com"
   ]
 }
