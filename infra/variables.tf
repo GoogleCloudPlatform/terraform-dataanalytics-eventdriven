@@ -43,5 +43,5 @@ variable "resource_labels" {
 variable "time_to_enable_apis" {
   description = "Time to enable APIs, approximate estimate is 5 minutes, can be more."
   type        = string
-  default     = "45m"
+  default     = "55m"
 }
