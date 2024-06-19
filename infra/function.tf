@@ -55,21 +55,46 @@ resource "google_cloudfunctions2_function" "function" {
     }
   }
 
-  event_trigger {
-    trigger_region        = var.region
-    event_type            = "google.cloud.storage.object.v1.finalized"
-    retry_policy          = "RETRY_POLICY_DO_NOT_RETRY"
-    service_account_email = google_service_account.function_sa.email
-    event_filters {
-      attribute = "bucket"
-      value     = google_storage_bucket.upload_bucket.name
-    }
-  }
+#  event_trigger {
+#    trigger_region        = var.region
+#    event_type            = "google.cloud.storage.object.v1.finalized"
+#    retry_policy          = "RETRY_POLICY_DO_NOT_RETRY"
+#    service_account_email = google_service_account.function_sa.email
+#    event_filters {
+#      attribute = "bucket"
+#      value     = google_storage_bucket.upload_bucket.name
+#    }
+#  }
 
   depends_on = [
     google_project_iam_member.gcs_to_pubsub,
     google_project_iam_member.event_receiver
   ]
+}
+
+#-- Eventarc trigger --#
+resource "google_eventarc_trigger" "trigger" {
+  project         = module.project_services.project_id
+  location        = var.region
+  name            = local.trigger_name
+  service_account = google_service_account.trigger.email
+  labels          = var.labels
+
+  matching_criteria {
+    attribute = "type"
+    value     = "google.cloud.storage.object.v1.finalized"
+  }
+  matching_criteria {
+    attribute = "bucket"
+    value     = google_storage_bucket.docs.name
+  }
+
+  destination {
+    cloud_run_service {
+      service = google_cloudfunctions2_function.webhook.name
+      region  = var.region
+    }
+  }
 }
 
 data "google_cloud_run_service" "run_service" {
