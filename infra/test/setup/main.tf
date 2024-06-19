@@ -33,6 +33,7 @@ module "project" {
     "cloudfunctions.googleapis.com",
     "bigquery.googleapis.com",
     "eventarc.googleapis.com",
-    "run.googleapis.com"
+    "run.googleapis.com",
+    "cloudbuild.googleapis.com"
   ]
 }
