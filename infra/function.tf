@@ -77,7 +77,7 @@ resource "google_eventarc_trigger" "trigger" {
   project         = var.project_id
   location        = var.region
   name            = local.trigger_name
-  service_account = google_service_account.trigger.email
+  service_account = google_service_account.function_sa.email
   labels          = var.labels
 
   matching_criteria {
@@ -86,12 +86,12 @@ resource "google_eventarc_trigger" "trigger" {
   }
   matching_criteria {
     attribute = "bucket"
-    value     = google_storage_bucket.docs.name
+    value     = google_storage_bucket.gcf_source_bucket.name
   }
 
   destination {
     cloud_run_service {
-      service = google_cloudfunctions2_function.webhook.name
+      service = google_cloudfunctions2_function.function.name
       region  = var.region
     }
   }
