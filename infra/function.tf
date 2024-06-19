@@ -76,7 +76,7 @@ resource "google_cloudfunctions2_function" "function" {
 resource "google_eventarc_trigger" "trigger" {
   project         = var.project_id
   location        = var.region
-  name            = local.trigger_name
+  name            = "eventarc-trigger"
   service_account = google_service_account.function_sa.email
   labels          = var.labels
 
