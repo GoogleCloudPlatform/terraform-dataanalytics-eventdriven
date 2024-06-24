@@ -82,7 +82,7 @@ resource "google_cloudfunctions2_function" "function" {
     min_instance_count    = 0
     available_memory      = "256M"
     timeout_seconds       = 60
-    service_account_email = google_service_account.function_sa.email
+    service_account_email = google_service_account.webhook.email
     environment_variables = {
       DW_PROJECT_ID      = module.project_services.project_id
       GCS_ARCHIVE_BUCKET = google_storage_bucket.archive_bucket.name
@@ -100,6 +100,7 @@ resource "google_project_iam_member" "webhook" {
   ])
   role = each.key
 }
+
 resource "google_service_account" "webhook" {
   project      = module.project_services.project_id
   account_id   = local.webhook_sa_name
