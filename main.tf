@@ -127,7 +127,7 @@ resource "google_eventarc_trigger" "trigger" {
   location        = var.region
   name            = local.trigger_name
   service_account = google_service_account.trigger.email
-  labels          = var.labels
+  labels          = var.resource_labels
 
   matching_criteria {
     attribute = "type"
