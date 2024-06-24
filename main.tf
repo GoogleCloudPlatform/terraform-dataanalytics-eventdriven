@@ -135,12 +135,12 @@ resource "google_eventarc_trigger" "trigger" {
   }
   matching_criteria {
     attribute = "bucket"
-    value     = google_storage_bucket.docs.name
+    value     = google_storage_bucket.upload_bucket.name
   }
 
   destination {
     cloud_run_service {
-      service = google_cloudfunctions2_function.webhook.name
+      service = google_cloudfunctions2_function.function.name
       region  = var.region
     }
   }
