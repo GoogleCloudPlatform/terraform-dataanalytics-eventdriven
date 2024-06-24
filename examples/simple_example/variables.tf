@@ -14,7 +14,12 @@
 
 # ID of the project in which you want to deploy the solution
 variable "project_id" {
-  description = "GCP Project ID"
+  description = "The Google Cloud project ID to deploy to"
+  type        = string
+  validation {
+    condition     = var.project_id != ""
+    error_message = "Error: project_id is required"
+  }
 }
 
 #Defines the deployment region for cloud resources.
