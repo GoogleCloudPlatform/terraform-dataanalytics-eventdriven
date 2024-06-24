@@ -106,6 +106,14 @@ resource "google_service_account" "webhook" {
   display_name = "Cloud Functions webhook service account"
 }
 
+resource "google_storage_bucket" "gcf_source_bucket" {
+  project                     = module.project_services.project_id
+  name                        = "${var.project_id}-gcf-source-bucket"
+  location                    = var.region
+  uniform_bucket_level_access = true
+  labels                      = local.resource_labels
+}
+
 resource "google_storage_bucket_object" "gcf_source_code" {
   name   = "function-source.zip"
   bucket = google_storage_bucket.gcf_source_bucket.name

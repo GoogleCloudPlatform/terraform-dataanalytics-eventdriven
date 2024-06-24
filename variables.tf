@@ -40,8 +40,8 @@ variable "resource_labels" {
   default     = {}
 }
 
-variable "time_to_enable_apis" {
-  description = "Time to enable APIs, approximate estimate is 5 minutes, can be more."
-  type        = string
-  default     = "10m"
+variable "disable_services_on_destroy" {
+  description = "Whether project services will be disabled when the resources are destroyed."
+  type        = bool
+  default     = false
 }
