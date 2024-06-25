@@ -24,9 +24,9 @@ locals {
     solution    = "cloud-composer-etl"
     terraform   = "true"
   })
-  webhook_sa_name          = var.unique_names ? "bt-webhook-sa-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-webhook-sa"
-  trigger_name             = var.unique_names ? "bt-trigger-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-trigger"
-  trigger_sa_name          = var.unique_names ? "bt-trigger-sa-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-trigger-sa"
+  webhook_sa_name = var.unique_names ? "bt-webhook-sa-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-webhook-sa"
+  trigger_name    = var.unique_names ? "bt-trigger-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-trigger"
+  trigger_sa_name = var.unique_names ? "bt-trigger-sa-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-trigger-sa"
 }
 
 # ID of the project in which you want to deploy the solution
@@ -60,4 +60,3 @@ variable "unique_names" {
   type        = bool
   default     = false
 }
-
