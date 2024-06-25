@@ -97,3 +97,20 @@ If you recently started to use Eventarc, it may take a few minutes before all ne
 ```
 
 It happens because the Eventarc permissions take some time to propagate. First, make sure you ran the `pre-req.sh` script. Then, wait some minutes and trigger the deploy job again. Please see the [Known issues for Eventarc](https://cloud.google.com/eventarc/docs/issues).
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| disable\_services\_on\_destroy | Whether project services will be disabled when the resources are destroyed. | `bool` | `false` | no |
+| project\_id | GCP Project ID | `string` | n/a | yes |
+| region | GCP region | `string` | n/a | yes |
+| resource\_labels | Resource labels | `map(string)` | `{}` | no |
+| unique\_names | Whether to use unique names for resources | `bool` | `false` | no |
+
+## Outputs
+
+No outputs.
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
