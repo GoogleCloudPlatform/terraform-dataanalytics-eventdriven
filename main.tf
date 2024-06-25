@@ -198,6 +198,7 @@ resource "google_bigquery_table" "order_events" {
   table_id            = "order_events"
   description         = "Store order events"
   deletion_protection = false
+  project             = module.project_services.project_id
 
   time_partitioning {
     type  = "DAY"
