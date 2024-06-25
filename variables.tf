@@ -24,7 +24,6 @@ locals {
     solution    = "cloud-composer-etl"
     terraform   = "true"
   })
-  bucket_docs_name         = var.unique_names ? "bt-docs-${var.project_id}-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-docs-${var.project_id}"
   webhook_sa_name          = var.unique_names ? "bt-webhook-sa-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-webhook-sa"
   trigger_name             = var.unique_names ? "bt-trigger-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-trigger"
   trigger_sa_name          = var.unique_names ? "bt-trigger-sa-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-trigger-sa"

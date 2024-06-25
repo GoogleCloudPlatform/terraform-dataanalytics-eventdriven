@@ -191,6 +191,7 @@ resource "google_bigquery_dataset" "ecommerce" {
   description = "Store ecommerce data"
   location    = var.region
   labels      = local.resource_labels
+  project             = module.project_services.project_id
 }
 
 resource "google_bigquery_table" "order_events" {
