@@ -114,7 +114,7 @@ For example, the steps below will always run with the terraform image `1.0.0`.
 steps:
 - id: 'tf apply'
   name: 'hashicorp/terraform:1.0.0'
-  args: 
+  args:
   - apply
   - -auto-approve
   dir: terraform

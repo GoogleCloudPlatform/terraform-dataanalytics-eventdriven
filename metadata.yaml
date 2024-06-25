@@ -1,0 +1,76 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-dataanalytics-eventdriven
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Implement a data analytics pipeline with an event-driven architecture on Google Cloud
+    source:
+      repo: https://github.com/GoogleCloudPlatform/terraform-dataanalytics-eventdriven.git
+      sourceType: git
+    actuationTool:
+      flavor: Terraform
+      version: ">= 0.13"
+    description: {}
+  content:
+    examples:
+      - name: simple_example
+        location: examples/simple_example
+  interfaces:
+    variables:
+      - name: disable_services_on_destroy
+        description: Whether project services will be disabled when the resources are destroyed.
+        varType: bool
+        defaultValue: false
+      - name: project_id
+        description: GCP Project ID
+        varType: string
+        required: true
+      - name: region
+        description: GCP region
+        varType: string
+        required: true
+      - name: resource_labels
+        description: Resource labels
+        varType: map(string)
+        defaultValue: {}
+      - name: unique_names
+        description: Whether to use unique names for resources
+        varType: bool
+        defaultValue: false
+  requirements:
+    roles:
+      - level: Project
+        roles:
+          - roles/aiplatform.user
+          - roles/artifactregistry.admin
+          - roles/iam.serviceAccountAdmin
+          - roles/iam.serviceAccountUser
+          - roles/resourcemanager.projectIamAdmin
+          - roles/serviceusage.serviceUsageAdmin
+    services:
+      - cloudresourcemanager.googleapis.com
+      - iam.googleapis.com
+      - storage.googleapis.com
+      - serviceusage.googleapis.com
+      - cloudfunctions.googleapis.com
+      - bigquery.googleapis.com
+      - eventarc.googleapis.com
+      - run.googleapis.com
+      - cloudbuild.googleapis.com

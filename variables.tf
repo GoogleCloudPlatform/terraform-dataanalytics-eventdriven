@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+resource "random_id" "unique_id" {
+  byte_length = 3
+}
+
 locals {
   function_name = "gcs-to-bq-trigger"
   resource_labels = merge(var.resource_labels, {
@@ -20,10 +24,14 @@ locals {
     solution    = "cloud-composer-etl"
     terraform   = "true"
   })
+  webhook_sa_name = var.unique_names ? "bt-webhook-sa-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-webhook-sa"
+  trigger_name    = var.unique_names ? "bt-trigger-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-trigger"
+  trigger_sa_name = var.unique_names ? "bt-trigger-sa-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-trigger-sa"
 }
 
 # ID of the project in which you want to deploy the solution
 variable "project_id" {
+  type        = string
   description = "GCP Project ID"
 }
 
@@ -38,4 +46,17 @@ variable "resource_labels" {
   type        = map(string)
   description = "Resource labels"
   default     = {}
+}
+
+variable "disable_services_on_destroy" {
+  description = "Whether project services will be disabled when the resources are destroyed."
+  type        = bool
+  default     = false
+}
+
+# Used for testing.
+variable "unique_names" {
+  description = "Whether to use unique names for resources"
+  type        = bool
+  default     = false
 }

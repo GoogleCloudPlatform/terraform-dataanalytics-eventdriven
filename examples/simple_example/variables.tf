@@ -12,22 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  backend "gcs" {
-  }
-
-  required_providers {
-    google = {
-      version = "4.77.0"
-    }
-  }
-
-  provider_meta "google" {
-    module_name = "cloud-solutions/data-analytics-platform-event-driven-v0.1"
+# ID of the project in which you want to deploy the solution
+variable "project_id" {
+  description = "The Google Cloud project ID to deploy to"
+  type        = string
+  validation {
+    condition     = var.project_id != ""
+    error_message = "Error: project_id is required"
   }
 }
 
-provider "google" {
-  project = var.project_id
-  region  = var.region
+#Defines the deployment region for cloud resources.
+variable "region" {
+  type        = string
+  description = "GCP region"
+  default     = "southamerica-east1"
 }
