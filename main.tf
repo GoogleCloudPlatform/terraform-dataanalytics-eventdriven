@@ -31,12 +31,13 @@ module "project_services" {
     "config.googleapis.com",
     "documentai.googleapis.com",
     "eventarc.googleapis.com",
-    "firestore.googleapis.com",
     "iam.googleapis.com",
     "run.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
     "storage.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "cloudfunctions.googleapis.com",
   ]
 }
 

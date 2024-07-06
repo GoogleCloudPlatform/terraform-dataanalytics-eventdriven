@@ -49,14 +49,9 @@ Pricing Estimates - We have created a sample estimate based on some usage we see
     <img alt="Open in Cloud Shell" src="https://gstatic.com/cloudssh/images/open-btn.svg">
 </a>
 
-2. Run the prerequisites script to enable APIs and set Cloud Build permissions.
-```
-sh prereq.sh
-```
-
 Please note - New organizations have the 'Enforce Domain Restricted Sharing' policy enforced by default. You may have to edit the policy to allow public access to your Cloud Run instance. Please refer to this [page](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains#setting_the_organization_policy) for more information.
 
-3. Run the Cloud Build Job
+2. Run the Cloud Build Job
 ```
 gcloud builds submit . --config ./build/cloudbuild.yaml
 ```
