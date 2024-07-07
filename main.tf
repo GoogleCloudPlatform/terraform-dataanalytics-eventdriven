@@ -182,7 +182,7 @@ resource "google_project_iam_member" "read" {
   member   = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
 }
 
-resource "google_project_iam_member" "read" {
+resource "google_project_iam_member" "write_log" {
   project  = module.project_services.project_id
   role     = "roles/roles/logging.logWriter"
   member   = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
