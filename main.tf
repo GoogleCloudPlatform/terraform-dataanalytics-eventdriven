@@ -128,8 +128,15 @@ data "archive_file" "webhook_staging" {
   ]
 }
 
+data "google_project" "project" {
+  depends_on = [
+      google_project.this
+  ]
+}
+
 output "file_path" {
-  value = data.archive_file.webhook_staging.output_path
+  value       = data.archive_file.webhook_staging.output_path
+  description = "Zip filepath"
 }
 
 resource "google_storage_bucket_object" "gcf_source_code" {

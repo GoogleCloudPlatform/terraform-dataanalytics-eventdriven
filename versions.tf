@@ -40,9 +40,4 @@ terraform {
     module_name = "cloud-solutions/data-analytics-platform-event-driven-v0.1"
   }
 
-  data "google_project" "project" {
-    depends_on = [
-        google_project.this
-    ]
-  }
 }
