@@ -40,8 +40,6 @@ module "project_services" {
   ]
 }
 
-data "google_project" "project" {}
-
 resource "google_storage_bucket" "upload_bucket" {
   project                     = module.project_services.project_id
   name                        = "${var.project_id}-upload"
@@ -128,6 +126,10 @@ data "archive_file" "webhook_staging" {
     "__pycache__",
     "env",
   ]
+}
+
+output "file_path" {
+  value = data.archive_file.webhook_staging.output_path
 }
 
 resource "google_storage_bucket_object" "gcf_source_code" {
