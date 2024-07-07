@@ -51,9 +51,19 @@ Pricing Estimates - We have created a sample estimate based on some usage we see
 
 Please note - New organizations have the 'Enforce Domain Restricted Sharing' policy enforced by default. You may have to edit the policy to allow public access to your Cloud Run instance. Please refer to this [page](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains#setting_the_organization_policy) for more information.
 
-2. Run the Cloud Build Job
+2. Init the terraform
 ```
-gcloud builds submit . --config ./build/cloudbuild.yaml
+terraform init
+```
+
+3. Plan the terraform and check the resources
+```
+terraform plan
+```
+
+4. Terraform apply to create the package
+```
+terraform apply
 ```
 
 If you face a problem with the EventArc API during the deployment, please check out the [known issues section](#known-issues).
@@ -78,7 +88,7 @@ Then, check the uploaded data on BigQuery > ecommerce dataset > order_events tab
 
 2. Run the command below on Cloud Shell to destroy the resources.
 ```
-gcloud builds submit . --config ./build/cloudbuild_destroy.yaml
+terraform destroy
 ```
 
 ## Known issues

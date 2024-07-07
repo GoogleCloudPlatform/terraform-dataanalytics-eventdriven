@@ -21,7 +21,7 @@ locals {
   resource_labels = merge(var.resource_labels, {
     deployed_by = "cloudbuild"
     repo        = "click-to-deploy-solutions"
-    solution    = "cloud-composer-etl"
+    solution    = "gcs-to-bq-trigger"
     terraform   = "true"
   })
   webhook_sa_name = var.unique_names ? "bt-webhook-sa-${random_id.unique_id.hex}" : "gcs-to-bq-trigger-webhook-sa"

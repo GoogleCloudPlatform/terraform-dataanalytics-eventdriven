@@ -13,15 +13,6 @@
 # limitations under the License.
 timeout: 5400s
 steps:
-- id: prepare-req
-  dir: code
-  name: ubuntu:bionic
-  args:
-  - '/bin/bash'
-  - '-c'
-  - |
-    apt-get update; apt install zip -y
-    zip /workspace/function-source.zip main.py requirements.txt
 
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'

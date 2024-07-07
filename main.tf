@@ -23,7 +23,6 @@ module "project_services" {
 
   activate_apis = [
     "aiplatform.googleapis.com",
-    "artifactregistry.googleapis.com",
     "cloudbuild.googleapis.com",
     "cloudfunctions.googleapis.com",
     "cloudresourcemanager.googleapis.com",
@@ -40,6 +39,8 @@ module "project_services" {
     "cloudfunctions.googleapis.com",
   ]
 }
+
+data "google_project" "project" {}
 
 resource "google_storage_bucket" "upload_bucket" {
   project                     = module.project_services.project_id
@@ -116,10 +117,23 @@ resource "google_storage_bucket" "gcf_source_bucket" {
   labels                      = local.resource_labels
 }
 
+data "archive_file" "webhook_staging" {
+  type        = "zip"
+  source_dir  = "${path.module}/code"
+  output_path = "${path.module}/workspace/function-source.zip"
+  excludes = [
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "__pycache__",
+    "env",
+  ]
+}
+
 resource "google_storage_bucket_object" "gcf_source_code" {
   name   = "function-source.zip"
   bucket = google_storage_bucket.gcf_source_bucket.name
-  source = "/workspace/function-source.zip"
+  source = "${path.module}/workspace/function-source.zip"
 }
 
 #-- Eventarc trigger --#
@@ -160,6 +174,18 @@ resource "google_service_account" "trigger" {
   project      = module.project_services.project_id
   account_id   = local.trigger_sa_name
   display_name = "Eventarc trigger service account"
+}
+
+resource "google_project_iam_member" "read" {
+  project  = module.project_services.project_id
+  role     = "roles/storage.objectViewer"
+  member   = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+}
+
+resource "google_project_iam_member" "read" {
+  project  = module.project_services.project_id
+  role     = "roles/roles/logging.logWriter"
+  member   = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
 }
 
 #-- Cloud Storage Eventarc agent --#
