@@ -116,6 +116,8 @@ It happens because the Eventarc permissions take some time to propagate. First, 
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| file\_path | Zip filepath |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

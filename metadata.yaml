@@ -54,6 +54,9 @@ spec:
         description: Whether to use unique names for resources
         varType: bool
         defaultValue: false
+    outputs:
+      - name: file_path
+        description: Zip filepath
   requirements:
     roles:
       - level: Project
