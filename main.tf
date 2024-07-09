@@ -39,7 +39,9 @@ module "project_services" {
   ]
 }
 
-data "google_project" "project" {}
+data "google_project" "project" {
+  project_id = module.project_services.project_id
+}
 
 resource "google_storage_bucket" "upload_bucket" {
   project                     = module.project_services.project_id
@@ -65,6 +67,19 @@ resource "google_storage_bucket" "gcf_source_bucket" {
   location                    = var.region
   uniform_bucket_level_access = true
   labels                      = local.resource_labels
+}
+
+data "archive_file" "webhook_staging" {
+  type        = "zip"
+  source_dir  = "${path.module}/code"
+  output_path = "${path.module}/workspace/function-source.zip"
+  excludes = [
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "__pycache__",
+    "env",
+  ]
 }
 
 resource "google_storage_bucket_object" "gcf_source_code" {
@@ -168,4 +183,72 @@ resource "google_bigquery_table" "order_events" {
 ]
 EOF
 
+}
+
+#-- Eventarc trigger --#
+resource "google_eventarc_trigger" "trigger" {
+  project         = module.project_services.project_id
+  location        = var.region
+  name            = local.trigger_name
+  service_account = google_service_account.trigger.email
+  labels          = var.resource_labels
+
+  matching_criteria {
+    attribute = "type"
+    value     = "google.cloud.storage.object.v1.finalized"
+  }
+  matching_criteria {
+    attribute = "bucket"
+    value     = google_storage_bucket.upload_bucket.name
+  }
+
+  destination {
+    cloud_run_service {
+      service = google_cloudfunctions2_function.function.name
+      region  = var.region
+    }
+  }
+}
+
+resource "google_project_iam_member" "trigger" {
+  project = module.project_services.project_id
+  member  = google_service_account.trigger.member
+  for_each = toset([
+    "roles/eventarc.eventReceiver",
+    "roles/run.invoker",
+  ])
+  role = each.key
+}
+
+resource "google_service_account" "trigger" {
+  project      = module.project_services.project_id
+  account_id   = local.trigger_sa_name
+  display_name = "Eventarc trigger service account"
+}
+
+#-- Cloud Storage Eventarc agent --#
+resource "google_project_iam_member" "gcs_account" {
+  project = module.project_services.project_id
+  member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
+  role    = "roles/pubsub.publisher" # https://cloud.google.com/pubsub/docs/access-control
+}
+
+data "google_storage_project_service_account" "gcs_account" {
+  project = module.project_services.project_id
+}
+
+resource "google_project_iam_member" "eventarc_agent" {
+  project = module.project_services.project_id
+  member  = "serviceAccount:${google_project_service_identity.eventarc_agent.email}"
+  for_each = toset([
+    "roles/eventarc.serviceAgent",             # https://cloud.google.com/iam/docs/service-agents
+    "roles/serviceusage.serviceUsageConsumer", # https://cloud.google.com/service-usage/docs/access-control
+  ])
+  role = each.key
+}
+
+resource "google_project_service_identity" "eventarc_agent" {
+  provider = google-beta
+  project  = module.project_services.project_id
+  service  = "eventarc.googleapis.com"
 }
