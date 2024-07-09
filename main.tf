@@ -94,9 +94,9 @@ resource "google_storage_bucket_object" "gcf_source_code" {
 }
 
 resource "google_project_iam_member" "read" {
-  project  = module.project_services.project_id
-  role     = "roles/editor"
-  member   = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+  project = module.project_services.project_id
+  role    = "roles/editor"
+  member  = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
 
   depends_on = [
     data.google_project.project
