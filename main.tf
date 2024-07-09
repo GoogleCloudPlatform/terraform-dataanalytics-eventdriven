@@ -23,6 +23,7 @@ module "project_services" {
 
   activate_apis = [
     "aiplatform.googleapis.com",
+    "artifactregistry.googleapis.com",
     "cloudbuild.googleapis.com",
     "cloudfunctions.googleapis.com",
     "cloudresourcemanager.googleapis.com",
@@ -35,10 +36,10 @@ module "project_services" {
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
     "storage.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "cloudfunctions.googleapis.com",
   ]
 }
+
+data "google_project" "project" {}
 
 resource "google_storage_bucket" "upload_bucket" {
   project                     = module.project_services.project_id
@@ -56,6 +57,30 @@ resource "google_storage_bucket" "archive_bucket" {
   uniform_bucket_level_access = true
   force_destroy               = true
   labels                      = local.resource_labels
+}
+
+resource "google_storage_bucket" "gcf_source_bucket" {
+  project                     = module.project_services.project_id
+  name                        = "${var.project_id}-gcf-source-bucket"
+  location                    = var.region
+  uniform_bucket_level_access = true
+  labels                      = local.resource_labels
+}
+
+resource "google_storage_bucket_object" "gcf_source_code" {
+  name   = "function-source.zip"
+  bucket = google_storage_bucket.gcf_source_bucket.name
+  source = "./workspace/function-source.zip"
+}
+
+resource "google_project_iam_member" "read" {
+  project  = module.project_services.project_id
+  role     = "roles/editor"
+  member   = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+
+  depends_on = [
+    data.google_project.project
+  ]
 }
 
 resource "google_cloudfunctions2_function" "function" {
@@ -90,136 +115,10 @@ resource "google_cloudfunctions2_function" "function" {
   }
 }
 
-resource "google_project_iam_member" "webhook" {
-  project = module.project_services.project_id
-  member  = google_service_account.webhook.member
-  for_each = toset([
-    "roles/storage.admin",
-    "roles/bigquery.admin",
-    "roles/documentai.apiUser",
-  ])
-  role = each.key
-}
-
 resource "google_service_account" "webhook" {
   project      = module.project_services.project_id
   account_id   = local.webhook_sa_name
   display_name = "Cloud Functions webhook service account"
-}
-
-resource "google_storage_bucket" "gcf_source_bucket" {
-  project                     = module.project_services.project_id
-  name                        = "${var.project_id}-gcf-source-bucket"
-  location                    = var.region
-  uniform_bucket_level_access = true
-  labels                      = local.resource_labels
-}
-
-data "archive_file" "webhook_staging" {
-  type        = "zip"
-  source_dir  = "${path.module}/code"
-  output_path = "${path.module}/workspace/function-source.zip"
-  excludes = [
-    ".mypy_cache",
-    ".pytest_cache",
-    ".ruff_cache",
-    "__pycache__",
-    "env",
-  ]
-}
-
-data "google_project" "project" {
-  depends_on = [
-      google_project.this
-  ]
-}
-
-output "file_path" {
-  value       = data.archive_file.webhook_staging.output_path
-  description = "Zip filepath"
-}
-
-resource "google_storage_bucket_object" "gcf_source_code" {
-  name   = "function-source.zip"
-  bucket = google_storage_bucket.gcf_source_bucket.name
-  source = "${path.module}/workspace/function-source.zip"
-}
-
-#-- Eventarc trigger --#
-resource "google_eventarc_trigger" "trigger" {
-  project         = module.project_services.project_id
-  location        = var.region
-  name            = local.trigger_name
-  service_account = google_service_account.trigger.email
-  labels          = var.resource_labels
-
-  matching_criteria {
-    attribute = "type"
-    value     = "google.cloud.storage.object.v1.finalized"
-  }
-  matching_criteria {
-    attribute = "bucket"
-    value     = google_storage_bucket.upload_bucket.name
-  }
-
-  destination {
-    cloud_run_service {
-      service = google_cloudfunctions2_function.function.name
-      region  = var.region
-    }
-  }
-}
-
-resource "google_project_iam_member" "trigger" {
-  project = module.project_services.project_id
-  member  = google_service_account.trigger.member
-  for_each = toset([
-    "roles/eventarc.eventReceiver",
-    "roles/run.invoker",
-  ])
-  role = each.key
-}
-resource "google_service_account" "trigger" {
-  project      = module.project_services.project_id
-  account_id   = local.trigger_sa_name
-  display_name = "Eventarc trigger service account"
-}
-
-resource "google_project_iam_member" "read" {
-  project  = module.project_services.project_id
-  role     = "roles/storage.objectViewer"
-  member   = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
-}
-
-resource "google_project_iam_member" "write_log" {
-  project  = module.project_services.project_id
-  role     = "roles/roles/logging.logWriter"
-  member   = "serviceAccount:${data.google_project.project.number}@cloudbuild.gserviceaccount.com"
-}
-
-#-- Cloud Storage Eventarc agent --#
-resource "google_project_iam_member" "gcs_account" {
-  project = module.project_services.project_id
-  member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
-  role    = "roles/pubsub.publisher" # https://cloud.google.com/pubsub/docs/access-control
-}
-data "google_storage_project_service_account" "gcs_account" {
-  project = module.project_services.project_id
-}
-
-resource "google_project_iam_member" "eventarc_agent" {
-  project = module.project_services.project_id
-  member  = "serviceAccount:${google_project_service_identity.eventarc_agent.email}"
-  for_each = toset([
-    "roles/eventarc.serviceAgent",             # https://cloud.google.com/iam/docs/service-agents
-    "roles/serviceusage.serviceUsageConsumer", # https://cloud.google.com/service-usage/docs/access-control
-  ])
-  role = each.key
-}
-resource "google_project_service_identity" "eventarc_agent" {
-  provider = google-beta
-  project  = module.project_services.project_id
-  service  = "eventarc.googleapis.com"
 }
 
 resource "google_bigquery_dataset" "ecommerce" {
