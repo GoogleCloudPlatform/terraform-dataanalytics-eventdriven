@@ -215,6 +215,17 @@ resource "google_eventarc_trigger" "trigger" {
   }
 }
 
+resource "google_project_iam_member" "webhook" {
+  project = module.project_services.project_id
+  member  = google_service_account.webhook.member
+  for_each = toset([
+    "roles/storage.admin",
+    "roles/bigquery.admin",
+    "roles/documentai.apiUser",
+  ])
+  role = each.key
+}
+
 resource "google_project_iam_member" "trigger" {
   project = module.project_services.project_id
   member  = google_service_account.trigger.member
