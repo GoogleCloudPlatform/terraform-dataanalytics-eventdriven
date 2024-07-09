@@ -131,6 +131,7 @@ resource "google_cloudfunctions2_function" "function" {
     environment_variables = {
       DW_PROJECT_ID      = module.project_services.project_id
       GCS_ARCHIVE_BUCKET = google_storage_bucket.archive_bucket.name
+      LOG_EXECUTION_ID   = true
     }
   }
 }
