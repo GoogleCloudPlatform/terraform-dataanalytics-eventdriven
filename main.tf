@@ -82,6 +82,11 @@ data "archive_file" "webhook_staging" {
   ]
 }
 
+output "file_path" {
+  value       = data.archive_file.webhook_staging.output_path
+  description = "Zip filepath"
+}
+
 resource "google_storage_bucket_object" "gcf_source_code" {
   name   = "function-source.zip"
   bucket = google_storage_bucket.gcf_source_bucket.name
