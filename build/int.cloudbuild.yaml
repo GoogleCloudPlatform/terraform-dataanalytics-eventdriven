@@ -22,7 +22,6 @@ steps:
   - |
     apt-get update; apt install zip -y
     zip /workspace/function-source.zip main.py requirements.txt
-
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && prepare_environment']

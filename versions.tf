@@ -15,8 +15,6 @@
  */
 
 terraform {
-  backend "gcs" {
-  }
 
   required_version = ">= 0.13"
   required_providers {
@@ -41,4 +39,5 @@ terraform {
   provider_meta "google" {
     module_name = "cloud-solutions/data-analytics-platform-event-driven-v0.1"
   }
+
 }
