@@ -45,23 +45,23 @@ Pricing Estimates - We have created a sample estimate based on some usage we see
 :clock1: Estimated deployment time: 8 min
 
 1. Click on Open in Google Cloud Shell button below.
-<a href="https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy-solutions&cloudshell_workspace=terraform-dataanalytics-eventdriven target="_new">
+<a href="https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/terraform-dataanalytics-eventdriven&cloudshell_open_in_editor=terraform.tfvars" target="_new">
     <img alt="Open in Cloud Shell" src="https://gstatic.com/cloudssh/images/open-btn.svg">
 </a>
 
 Please note - New organizations have the 'Enforce Domain Restricted Sharing' policy enforced by default. You may have to edit the policy to allow public access to your Cloud Run instance. Please refer to this [page](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains#setting_the_organization_policy) for more information.
 
-2. Init the terraform
+1. Init the terraform
 ```
 terraform init
 ```
 
-3. Plan the terraform and check the resources
+1. Plan the terraform and check the resources
 ```
 terraform plan
 ```
 
-4. Terraform apply to create the package
+1. Terraform apply to create the package
 ```
 terraform apply
 ```
@@ -82,7 +82,7 @@ Then, check the uploaded data on BigQuery > ecommerce dataset > order_events tab
 ## Cleaning up your environment
 
 1. Click on Open in Google Cloud Shell button below.
-<a href="https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/click-to-deploy-solutions&cloudshell_workspace=data-analytics-platform-event-driven&cloudshell_open_in_editor=terraform/terraform.tfvars" target="_new">
+<a href="https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/terraform-dataanalytics-eventdriven&cloudshell_open_in_editor=terraform.tfvars" target="_new">
     <img alt="Open in Cloud Shell" src="https://gstatic.com/cloudssh/images/open-btn.svg">
 </a>
 
