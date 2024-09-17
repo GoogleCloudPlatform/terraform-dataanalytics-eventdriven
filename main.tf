@@ -91,7 +91,7 @@ resource "google_storage_bucket_object" "gcf_source_code" {
   name   = "function-source.zip"
   bucket = google_storage_bucket.gcf_source_bucket.name
   //source = "./workspace/function-source.zip"
-  source = "${path.root}/workspace/function-source.zip"
+  source = "${path.module}/workspace/function-source.zip"
 }
 
 resource "google_project_iam_member" "read" {
