@@ -14,7 +14,7 @@
 
 steps:
 - id: 'zip code'
-  name: 'ubuntu:bionic'
+  name: 'ubuntu:noble'
   entrypoint: 'sh'
   args:
   - '-c'
